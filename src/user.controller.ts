@@ -1,5 +1,21 @@
-import {Controller, Get, Req,HttpCode, Post,HttpStatus, Res,Header,Redirect} from "@nestjs/common";
+import {Controller, Get, Req,HttpCode, Post,HttpStatus, Res,Header,Redirect, Param, Query, Body} from "@nestjs/common";
 import { Request, Response } from "express";
+
+interface VideoParams {
+    id: number;
+    name: string;
+}
+
+interface VideoQuery {
+    name:string;
+    type:string;
+    color:string;
+}
+
+interface VideoDTO {
+    name:string;
+    tag:string;
+}
 
 @Controller("/users")
 export class UserController {
@@ -35,6 +51,28 @@ export class UserController {
     @Post("/create-profile")
     @HttpCode(201)
     createProfile(@Req() req: Request) {
+        console.log(req.body);
         return "Sab theek!";
+    }
+
+
+    @Get("/videos/:id/:name")
+    getVideos(@Param() params: VideoParams) {
+        console.log(params);
+        return `Success!`;
+    }
+
+    @Get("/videos/query")
+    getVideosQuery(@Query() query:Record<string,any>) {
+        console.log(query);
+        return `Getting videos for queries`
+    }
+
+    @Post("/video")
+    getUserVideo(@Body() requestData:VideoDTO) {
+        console.log(requestData);
+        return {
+            success:"true"
+        }
     }
 }
